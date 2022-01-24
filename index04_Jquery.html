@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slider Slide04</title>
+    <style>
+         @font-face { 
+            font-family: 'NEXON Lv1 Gothic OTF'; 
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/NEXON Lv1 Gothic OTF.woff') format('woff');
+            font-weight: normal; 
+            font-style: normal; 
+        }
+
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            background-color: #043016cc;
+            font-family: 'NEXON Lv1 Gothic OTF'; 
+            overflow: hidden;
+        }
+
+        .slider_wrap {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            overflow: hidden;
+            transform: translate(-50%, -50%);
+            align-items: center;
+            justify-content: center;
+            width: 1000px;
+            height: 600px;
+        }
+
+        .slider_wrap .slider_img {
+            position: relative;
+            width: 6000px;
+            height: 600px;
+        }
+
+        .slider_wrap .slider_img .slider {
+            position: relative;
+            width: 1000px;
+            height: 600px;
+            transition: all .5s ease-in-out;
+        }
+
+        .slider_wrap .slider_img .slider span {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: #fff;
+        }
+
+        img {
+            width: 100%;
+            vertical-align: top;
+        }
+
+        ul {list-style: none;}
+        a {text-decoration: none;}
+
+        .info {position: absolute; top: 30px; right: 50px; z-index: 999;}
+        .info ul {}
+        .info ul li {margin-bottom: 10px; color: #fff;}
+
+        .info ul li a {
+            display: inline-block;
+            margin-left: 5px;
+            width: 20px; height: 20px;
+            border: 1px dashed #fff;
+            line-height: 22px;
+            border-radius: 50%;
+            text-align: center;
+            color: #fff;
+            transition: .2s ease-in-out;
+        }
+
+        .info ul li a:hover {background: #fff; color: #000;}
+
+        .info ul li.active a:first-child {color: #000; background: #fff;}
+
+        .info_left {position: absolute; top: 20px; left: 20px;}
+        .info_left h1 {font-size: 20px; border-bottom: 1px dashed #fff; color: #fff;}
+
+
+        .slider_wrap .slider_img .slider:nth-child(1) {
+            z-index: 5;
+        }
+
+        .slider_wrap .slider_img .slider:nth-child(2) {
+            z-index: 4;
+        }
+
+        .slider_wrap .slider_img .slider:nth-child(3) {
+            z-index: 3;
+        }
+
+        .slider_wrap .slider_img .slider:nth-child(4) {
+            z-index: 2;
+        }
+
+        .slider_wrap .slider_img .slider:nth-child(5) {
+            z-index: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="info_left">
+        <h1>Jquery ImageSlide 04</h1>
+    </div>
+    <div class="info">
+        <ul>
+            <li>Slider<a href="index01_Jquery.html">1</a><a href="index01.html">1</a></li>
+            <li>Slider<a href="index02_Jquery.html">2</a><a href="index02.html">2</a></li>
+            <li>Slider<a href="index03_Jquery.html">3</a><a href="index03.html">3</a></li>
+            <li class="active">Slider<a href="index04_Jquery.html">4</a><a href="index04.html">4</a></li>
+            <li>Slider<a href="index05_Jquery.html">5</a><a href="index05.html">5</a></li>
+            <li>Slider<a href="index06_Jquery.html">6</a><a href="index06.html">6</a></li>
+            <li>Slider<a href="index07_Jquery.html">7</a><a href="index07.html">7</a></li>
+        </ul>
+    </div>
+    <div class="slider_wrap">
+        <div class="slider_img">
+            <div class="slider">
+                <img src="assets/img/sc01.jpg" alt="이미지1">
+                <span>이미지1</span>
+            </div>
+            <div class="slider">
+                <img src="assets/img/sc02.jpg" alt="이미지2">
+                <span>이미지2</span>
+            </div>
+            <div class="slider">
+                <img src="assets/img/sc03.jpg" alt="이미지3">
+                <span>이미지3</span>
+            </div>
+            <div class="slider">
+                <img src="assets/img/sc04.jpg" alt="이미지4">
+                <span>이미지4</span>
+            </div>
+            <div class="slider">
+                <img src="assets/img/sc05.jpg" alt="이미지5">
+                <span>이미지5</span>
+            </div>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
+    <script>
+        const sliderWrap = $(".slider_wrap");
+        const sliderImg = $(".slider_img");
+        const slider = $(".slider");
+
+        let currentIndex = 0;
+        let sliderCount = slider.length;
+
+        setInterval(function(){
+            sliderImg.animate({top : "-600px"}, 400, function(){
+                $(".slider:first-child").appendTo(sliderImg);
+                sliderImg.css("top", "0");
+            });
+        },3000);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Slide06</title>
+    <style>
+        @font-face { 
+            font-family: 'NEXON Lv1 Gothic OTF'; 
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/NEXON Lv1 Gothic OTF.woff') format('woff');
+            font-weight: normal; 
+            font-style: normal; 
+        }
+        
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            background-color: rgba(4, 10, 48, 0.8);
+            font-family: 'NEXON Lv1 Gothic OTF';
+            overflow: hidden;
+        }
+
+        button {
+            color: #fff;
+            border: 0;
+        }
+
+        a {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        a:hover {
+            border-bottom: 1px dashed #fff;
+        }
+        ul {list-style: none;}
+        a {text-decoration: none;}
+
+        .info {position: absolute; top: 30px; right: 50px; z-index: 999;}
+        .info ul li {margin-bottom: 10px; color: #fff;}
+
+        .info ul li a {
+            display: inline-block;
+            margin-left: 5px;
+            width: 20px; height: 20px;
+            border: 1px dashed #fff;
+            line-height: 22px;
+            border-radius: 50%;
+            text-align: center;
+            color: #fff;
+            transition: .2s ease-in-out;
+        }
+
+        .info ul li a:hover {background: #fff; color: #000;}
+
+        .info ul li.active a:last-child {color: #000; background: #fff;}
+
+        .info_left {position: absolute; top: 20px; left: 20px;}
+        .info_left h1 {font-size: 20px; border-bottom: 1px dashed #fff; color: #fff;}
+
+
+        .slider_wrap {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            overflow: hidden;
+            transform: translate(-50%, -50%);
+            align-items: center;
+            justify-content: center;
+            width: 1200px;
+        }
+
+        .slider_wrap .slider_img {
+            position: relative;
+            top: 0;
+            left: 0;
+            
+        }
+
+        .animated {
+            transition: all .5s ease-out;
+        }
+
+        .slider_btn button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1000;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            text-transform: capitalize;
+        }
+
+        .slider_btn button.next {
+            right: 0;
+        }
+
+        .slider_btn button.prev {
+            left: 0;
+        }
+
+        .slider_wrap .slider_img .slider {
+            position: relative;
+            float: left;
+            width: 400px;
+            padding: 10px;
+            transition: all .5s ease-in-out;
+            box-sizing: border-box;
+        }
+
+        .slider_wrap .slider_img .slider span {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #fff;
+        }
+
+        img {
+            width: 100%;
+            vertical-align: top;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="info_left">
+        <h1>JavaScript ImageSlide 06</h1>
+    </div>
+    <div class="info">
+        <ul>
+            <li>Slider<a href="index01_Jquery.html">1</a><a href="index01.html">1</a></li>
+            <li>Slider<a href="index02_Jquery.html">2</a><a href="index02.html">2</a></li>
+            <li>Slider<a href="index03_Jquery.html">3</a><a href="index03.html">3</a></li>
+            <li>Slider<a href="index04_Jquery.html">4</a><a href="index04.html">4</a></li>
+            <li>Slider<a href="index05_Jquery.html">5</a><a href="index05.html">5</a></li>
+            <li class="active">Slider<a href="index06_Jquery.html">6</a><a href="index06.html">6</a></li>
+            <li>Slider<a href="index07_Jquery.html">7</a><a href="index07.html">7</a></li>
+        </ul>
+    </div>
+    <div class="slider_wrap">
+        <div class="slider_img">
+            <div class="slider">
+                <img src="assets/img/sc01.jpg" alt="이미지1">
+                <span>이미지1</span>
+            </div>
+            <div class="slider">
+                <img src="assets/img/sc02.jpg" alt="이미지2">
+                <span>이미지2</span>
+            </div>
+            <div class="slider">
+                <img src="assets/img/sc03.jpg" alt="이미지3">
+                <span>이미지3</span>
+            </div>
+            <div class="slider">
+                <img src="assets/img/sc04.jpg" alt="이미지4">
+                <span>이미지4</span>
+            </div>
+            <div class="slider">
+                <img src="assets/img/sc05.jpg" alt="이미지5">
+                <span>이미지5</span>
+            </div>
+        </div>
+    </div>
+    <div class="slider_btn">
+        <button type="button" class="next">next</button>
+        <button type="button" class="prev">prev</button>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
+    <script>
+        const sliderWrap = document.querySelector(".slider_wrap");
+        const sliderImg = document.querySelector(".slider_img");
+        const slider = document.querySelectorAll(".slider");
+        const next = document.querySelector(".next");
+        const prev = document.querySelector(".prev");
+        const sliderCount = slider.length;
+
+        let currentIndex = 0;
+        let sliderWidth = 400;
+        let sliderHeight = slider.clientHeight;
+
+        let currentSlide = slider[currentIndex];
+
+        // sliderImg.style.width = (sliderWrap.clientWidth * (sliderCount + 2)) + "px";
+        console.log(sliderCount);
+
+        // let firstChild = sliderImg.cloneNode(true);
+        // let secondChild = sliderImg.children[1].cloneNode(true);
+        // let lastChild = sliderImg.lastElementChild.cloneNode(true);
+
+        // sliderImg.style.marginLeft = -sliderWidth + "px";
+
+        // sliderImg.append(firstChild);
+        // sliderImg.insertBefore(firstChild, sliderImg.firstElementChild);
+        // sliderImg.insertBefore(lastChild, sliderImg.firstElementChild);
+
+        makeClone();
+
+        function makeClone (){
+            for (var i = 0; i<sliderCount; i++){
+                var cloneSlide = slider[i].cloneNode(true);
+                cloneSlide.classList.add('clone');
+                sliderImg.appendChild(cloneSlide);
+            }
+            for (var i = sliderCount - 1; i>=0; i--){
+                var cloneSlide = slider[i].cloneNode(true);
+                cloneSlide.classList.add('clone');
+                sliderImg.prepend(cloneSlide);
+            }
+            updateWidth();
+            setInitialPos();
+            setTimeout(function(){
+                sliderImg.classList.add('animated');
+            }, 100);
+        }
+
+        function updateWidth(){
+            var currentSlide = document.querySelectorAll(".slider");
+            var newSlideCount = currentSlide.length;
+
+            var newWidth =  sliderWidth * newSlideCount + 'px'
+            sliderImg.style.width = newWidth;
+        }
+        function setInitialPos() {
+            var initialTranslateValue = -sliderWidth * sliderCount;
+            sliderImg.style.transform = 'translateX(' + initialTranslateValue+'px)';
+        }
+
+        next.addEventListener("click",function(){
+            moveSlide(currentIndex + 1);
+        });
+
+        prev.addEventListener("click",function(){
+            moveSlide(currentIndex - 1);
+        });
+
+        function moveSlide(num){
+            sliderImg.style.left = -num * (sliderWidth) + 'px';
+            currentIndex = num;
+            console.log(currentIndex , sliderCount);
+            if (currentIndex == sliderCount || -currentIndex == sliderCount) {
+                setTimeout(function(){
+                    sliderImg.classList.remove('animated');
+                    sliderImg.style.left = '0px';
+                    currentIndex = 0;
+                },500);
+                setTimeout(function(){
+                    sliderImg.classList.add('animated');
+                },600);
+            }
+        }
+
+        // console.log(sliderWidth);
+        // next.addEventListener("click", function () {
+        //     if (currentIndex <= sliderCount) {
+        //         sliderImg.style.transition = "0.3s";
+        //         sliderImg.style.marginLeft = -(sliderWidth * (currentIndex + 2)) + "px";
+        //         console.log(currentIndex);
+        //         currentIndex++;
+        //     }
+        // });
+
+        // prev.addEventListener("click", function () {
+        //     if (currentIndex >= 0) {
+        //         currentIndex--;
+        //         sliderImg.style.transition = "0.3s";
+        //         sliderImg.style.marginLeft = -(sliderWidth * (currentIndex + 1)) + "px";
+        //         console.log(sliderWidth);
+        //         console.log(currentIndex);
+        //     }
+        // });
+
+    </script>
+</body>
+
+</html>
