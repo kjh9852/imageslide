@@ -152,7 +152,6 @@
             width: 20px;
             height: 20px;
             border-radius: 50%;
-            margin-right: 5px;
             transition: 0.5s ease-in-out;
             background: rgba(0, 0, 0, 0.5)
         }
@@ -185,20 +184,20 @@
                 <span>이미지1</span>
             </div>
             <div class="slider">
-                <img src="assets/img/sc02.jpg" alt="이미지2">
-                <span>이미지2</span>
+                <img src="assets/img/sc02.jpg" alt="이미지1">
+                <span>이미지1</span>
             </div>
             <div class="slider">
-                <img src="assets/img/sc03.jpg" alt="이미지3">
-                <span>이미지3</span>
+                <img src="assets/img/sc03.jpg" alt="이미지1">
+                <span>이미지1</span>
             </div>
             <div class="slider">
-                <img src="assets/img/sc04.jpg" alt="이미지4">
-                <span>이미지4</span>
+                <img src="assets/img/sc04.jpg" alt="이미지1">
+                <span>이미지1</span>
             </div>
             <div class="slider">
-                <img src="assets/img/sc05.jpg" alt="이미지5">
-                <span>이미지5</span>
+                <img src="assets/img/sc05.jpg" alt="이미지1">
+                <span>이미지1</span>
             </div>
         </div>
     </div>
@@ -207,6 +206,11 @@
         <button type="button" class="prev">prev</button>
     </div>
     <div class="slider_dot">
+        <a href="#" class="active"></a>
+        <a href="#"></a>
+        <a href="#"></a>
+        <a href="#"></a>
+        <a href="#"></a>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
     <script>
@@ -216,19 +220,16 @@
         const next = document.querySelector(".next");
         const prev = document.querySelector(".prev");
         const slideDot = document.querySelector(".slider_dot");
-
-        let dotIndex = "";
-
-        let currentCount = 0;
+        const dot = document.querySelectorAll(".slider_dot > a");
 
         let slideCount = slider.length;
-        let slideCurrent = slider[currentCount];
         let startNum = 0;
         let firstChild = sliderImg.firstElementChild.cloneNode(true);
         let lastChild = sliderImg.lastElementChild.cloneNode(true);
         sliderImg.append(firstChild);
         sliderImg.insertBefore(lastChild, sliderImg.firstElementChild);
 
+        let currentCount = 0;
 
         const sliderWidth = sliderWrap.clientWidth;
         console.log(sliderWidth);
@@ -236,11 +237,6 @@
 
         sliderImg.style.transform = "translateX(-" + (sliderWidth * (startNum + 1)) + "px)"
 
-        slider.forEach(function(){
-            dotIndex += "<a href='#'></a>";
-        });
-        slideDot.innerHTML += dotIndex;
-        slideDot.children[0].classList.add('active');
 
 
         next.addEventListener('click', function () {
@@ -249,27 +245,12 @@
                 slideDot.children[currentCount].classList.add('active');
                 slideDot.children[currentCount - 1].classList.remove('active');
             }
-            if (currentCount === slideCount ) {
-                currentCount = 0;
-                slideDot.children[currentCount].classList.add('active');
-                slideDot.children[currentCount + 4].classList.remove('active');
-            }
         });
 
         prev.addEventListener('click', function (){
             moveSlide(currentCount - 1);
-
-            if(currentCount < slideCount && currentCount !== 4) {
-                slideDot.children[currentCount].classList.add('active');
-                slideDot.children[currentCount + 1].classList.remove('active');
-            }
-
-            if (currentCount === 4) {
-                slideDot.children[currentCount].classList.add('active');
-                slideDot.children[0].classList.remove('active');
-            }
-
-            console.log(currentCount,slideCount);
+            slideDot.children[currentCount].classList.add('active');
+            slideDot.children[currentCount + 1].classList.remove('active');
         });
 
         function moveSlide(num) {
@@ -278,39 +259,29 @@
             currentCount = num;
 
             console.log(currentCount, slideCount);
-
-            if (currentCount === slideCount) {
-                setTimeout(function () {
-                        sliderImg.style.transition = "0s";
-                        sliderImg.style.left = "0px";
-                    }, 501);
+            setTimeout(function () {
+                if (currentCount == slideCount) {
+                    sliderImg.style.transition = "0s";
+                    sliderImg.style.left = "0px";
+                    slideDot.children[currentCount - 1].classList.remove('active');
+                    currentCount = 0;
+                    slideDot.children[currentCount].classList.add('active');
                 }
-
-            if (currentCount < 0){
-                    setTimeout(function(){
-                        sliderImg.style.transition = "0s";
-                        sliderImg.style.left = `${-sliderWidth * (slideCount - 1)}px`
-                    }, 501);
-                currentCount = slideCount - 1;
+            }, 500);
+            setTimeout(function () {
+                if (-currentCount == 1) {
+                    sliderImg.style.transition = "0s";
+                    sliderImg.style.left = "-4000px";
+                    // slideDot.children[currentCount].classList.remove('active');
+                    currentCount = 4;
+                    // slideDot.children[currentCount + 4].classList.add('active');
                 }
-            };
+            }, 500);
+        };
 
-            const dot = document.querySelectorAll('.slider_dot a');
-            console.log(dot);
-            
-                for(let i = 0; i < dot.length; i++) {
-                        let index = new Array(i);
-                        dot[i].addEventListener('click',function(e){
-                            currentCount = index.length;
-                            sliderImg.style.transition = "0.5s";
-                            sliderImg.style.left = `${-currentCount * sliderWidth}px`
-                                for(let j = 0; j < dot.length; j++)
-                                {
-                                    dot[j].classList.remove('active');
-                                }
-                            dot[i].classList.add('active'); 
-                    });
-                }
+        slideDot.addEventListener('click',function(){
+            slideDot.children[currentCount].classList.add('active');
+        });
     </script>
 </body>
 
